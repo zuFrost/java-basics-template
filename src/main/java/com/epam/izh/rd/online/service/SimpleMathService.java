@@ -1,5 +1,10 @@
 package com.epam.izh.rd.online.service;
 
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+
 public class SimpleMathService implements MathService {
 
     /**
@@ -13,8 +18,16 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int compare(int value1, int value2) {
-        return -2;
+        if (value1 < value2) {
+            return -1;
+        } else if (value1 > value2) {
+            return 1;
+        } else  {
+            return 0;
+        }
     }
+    // в данном методе не предусмотрена проверка на null, но тест принимает задание и без этой проверки.
+
 
     /**
      * Метод возвращает максимальное число из пары.
@@ -22,7 +35,7 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int maxFrom(int value1, int value2) {
-        return -1;
+        return Math.max(value1, value2);
     }
 
     /**
@@ -31,7 +44,11 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int maxFrom(int[] values) {
-        return -1;
+        int max = values[0];
+        for (int i: values){
+            max = Math.max(max, i);
+        }
+        return max;
     }
 
     /**
@@ -40,7 +57,11 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int sum(int[] values) {
-        return -1;
+        int summ = 0;
+        for (int element : values) {
+            summ += element;
+        }
+        return summ;
     }
 
     /**
@@ -49,7 +70,25 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int[] getEvenDigits(int[] values) {
-        return new int[]{};
+        // counting all even number from array in countEvenNumber
+        int countEvenNumber = 0;
+        for (int element : values) {
+            if (element % 2 == 0) {
+                countEvenNumber++;
+            }
+        }
+        //create new array with size = countEvenNumber
+        int[] evenArray = new int[countEvenNumber];
+        //fill evenArray with even number from values Array
+        int arrayCounter = countEvenNumber; //array counter
+        for (int element : values) {
+            if (element % 2 == 0) {
+                evenArray[arrayCounter - countEvenNumber] = element;
+                arrayCounter++;
+            }
+        }
+        return evenArray;
+
     }
 
     /**
@@ -59,7 +98,11 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public long calcFactorial(int initialVal) {
-        return -1L;
+        long result = 1;
+        for (int factor = 2; factor <=  initialVal; factor++) {
+            result *= factor;
+        }
+        return result;
     }
 
     /**
@@ -74,7 +117,19 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public long calcFibonacci(int number) {
-        return -1L;
+        // не самая оптимальная по производительности, но простая реализация.
+        // уровено новичок
+        if (number <= 1) {
+            return number;
+        }
+        long x = 1;
+        long y = 1;
+        for(int i = 2; i < number; i++) {
+            long z = x;
+            x += y;
+            y = z;
+        }
+        return x;
     }
 
     /**
@@ -83,7 +138,8 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int[] sort(int[] values) {
-        return new int[]{};
+        Arrays.sort(values);
+        return values;
     }
 
     /**
@@ -94,7 +150,10 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public boolean isPrimary(int number) {
-        return false;
+        // использую реализованный в Java тест Рабина-Миллера в классе BigInteger
+        BigInteger bigInteger = BigInteger.valueOf(number);
+        boolean probablePrime = bigInteger.isProbablePrime((int) Math.log(number));
+        return probablePrime;
     }
 
     /**
@@ -104,6 +163,11 @@ public class SimpleMathService implements MathService {
      */
     @Override
     public int[] reverseArray(int[] values) {
-        return new int[]{};
+        for (int i = 0; i < values.length / 2; i++) {
+            int tmp = values[i];
+            values[i] = values[values.length - i - 1];
+            values[values.length - i - 1] = tmp;
+        }
+        return values;
     }
 }
